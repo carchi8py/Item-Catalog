@@ -1,10 +1,12 @@
-from flask import Flask
+from flask import Flask, render_template
 app = Flask(__name__)
+
+categories = [{'name': 'The CRUDdy Crab', 'id': '1'}, {'name':'Blue Burgers', 'id':'2'},{'name':'Taco Hut', 'id':'3'}]
 
 @app.route('/')
 @app.route('/catalog/')
 def showCatalog():
-    return "This page show all Catalogs"
+    return render_template('catalog.html', categories = categories)
 
 @app.route('/catalog/<category>/items')
 def showCategory(category):

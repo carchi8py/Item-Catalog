@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>Catalog App</title>
+    </head>
+    <body>
+        <h1>Catalog App</h1>
+        <table>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td><b>Categories</b></td>
+                        </tr>
+                        {% for c in categories %}
+                            <tr>
+                                <td>{{c.name}}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
