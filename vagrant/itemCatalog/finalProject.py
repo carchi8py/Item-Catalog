@@ -5,7 +5,7 @@ catagory = {'name': 'The CRUDdy Crab', 'id': '1'}
 categories = [{'name': 'The CRUDdy Crab', 'id': '1'}, {'name':'Blue Burgers', 'id':'2'},{'name':'Taco Hut', 'id':'3'}]
 
 items = [ {'name':'Cheese Pizza', 'description':'made with fresh cheese', 'price':'$5.99','course' :'Entree', 'id':'1'}, {'name':'Chocolate Cake','description':'made with Dutch Chocolate', 'price':'$3.99', 'course':'Dessert','id':'2'},{'name':'Caesar Salad', 'description':'with fresh organic vegetables','price':'$5.99', 'course':'Entree','id':'3'},{'name':'Iced Tea', 'description':'with lemon','price':'$.99', 'course':'Beverage','id':'4'},{'name':'Spinach Dip', 'description':'creamy dip with fresh spinach','price':'$1.99', 'course':'Appetizer','id':'5'} ]
-item =  {'name':'Cheese Pizza','description':'made with fresh cheese','price':'$5.99','course' :'Entree'}
+item1 =  {'name':'Cheese Pizza','description':'made with fresh cheese','price':'$5.99','course' :'Entree'}
 
 @app.route('/')
 @app.route('/catalog/')
@@ -18,7 +18,9 @@ def showCategory(category):
 
 @app.route('/catalog/<category>/<item>')
 def showItems(category, item):
-    return "This is a %s from %s" % (item, category)
+    print 'hit'
+    print item
+    return render_template('item.html', item = item1)
 
 @app.route('/catalog/<item>/edit')
 def editItem(item):
