@@ -22,12 +22,11 @@ def showItems(category, item):
 
 @app.route('/catalog/<item>/edit')
 def editItem(item):
-    print item1
     return render_template('editItem.html', item = item1, categories = categories)
 
 @app.route('/catalog/<item>/delete')
 def deleteItem(item):
-    return "This page allows the user to delete %s" % item
+    return render_template('deleteItem.html', item = item1)
 
 if __name__ == '__main__':
     app.debug = True
