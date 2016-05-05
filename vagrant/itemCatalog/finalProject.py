@@ -18,13 +18,12 @@ def showCategory(category):
 
 @app.route('/catalog/<category>/<item>')
 def showItems(category, item):
-    print 'hit'
-    print item
     return render_template('item.html', item = item1)
 
 @app.route('/catalog/<item>/edit')
 def editItem(item):
-    return "This page allows the user to edit %s" % item
+    print item1
+    return render_template('editItem.html', item = item1, categories = categories)
 
 @app.route('/catalog/<item>/delete')
 def deleteItem(item):
