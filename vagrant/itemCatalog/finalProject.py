@@ -28,6 +28,10 @@ def editItem(item):
 def deleteItem(item):
     return render_template('deleteItem.html', item = item1)
 
+@app.route('/catalog/item/new')
+def newItem():
+    return render_template('newItem.html', categories = categories)
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host = "0.0.0.0", port = 8000)

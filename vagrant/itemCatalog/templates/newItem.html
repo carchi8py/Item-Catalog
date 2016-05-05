@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>Catalog App</title>
+    </head>
+    <body>
+        <h1>Catalog App</h1>
+        <table>
+            <tr>
+                <td>
+                    New Item
+                </td>
+            </tr>
+            <tr>
+                <td>
+                <form>
+                Title<br>
+                <input type="text" name="name"><br>
+                Description <br>
+                <input type="text" name="description"><br>
+                Category <br>
+                <select name="catagories">
+                    {% for each in categories %}
+                        <option value="{{each.name}}">{{each.name}}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Submit">
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
