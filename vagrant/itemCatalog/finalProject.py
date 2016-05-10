@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Catagory, Item, Base
@@ -41,11 +41,20 @@ def showItems(category, item):
     item = session.query(Item).filter(Item.cat_id == category.id).filter_by(title = item).one()
     return render_template('item.html', item = item)
 
-@app.route('/catalog/<item>/edit')
+@app.route('/catalog/<item>/edit', methods=['GET', 'POST'])
 def editItem(item):
     categories = session.query(Catagory)
     item = session.query(Item).filter_by(title = item).one()
-    return render_template('editItem.html', item = item, categories = categories)
+    if request.method == 'POST':
+        if request.form['title']:
+            item.title = request.form['title']
+        if request.form['description']:
+            item.description = request.form['description']
+        session.add(item)
+        session.commit()
+        return redirect(url_for('showCatalog'))
+    else:
+        return render_template('editItem.html', item = item, categories = categories)
 
 @app.route('/catalog/<item>/delete')
 def deleteItem(item):

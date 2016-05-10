@@ -12,18 +12,19 @@
             </tr>
             <tr>
                 <td>
-                <form>
-                Title<br>
-                <input type="text" name="title" value="{{item.title}}"><br>
-                Description <br>
-                <input type="text" name="description" value="{{item.description}}"><br>
-                Category <br>
-                <select name="catagories">
-                    {% for each in categories %}
-                        <option value="{{each.name}}">{{each.name}}</option>
-                    {% endfor %}
-                </select>
-                <input type="submit" value="Submit">
+                <form action="#", method = "post">
+                    Title<br>
+                    <input type="text" name="title" value="{{item.title}}"><br>
+                    Description <br>
+                    <input type="text" name="description" value="{{item.description}}"><br>
+                    Category <br>
+                    <select name="catagories">
+                        {% for each in categories %}
+                            <option value="{{each.name}}">{{each.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Submit">
+                </form>
                 </td>
             </tr>
         </table>
