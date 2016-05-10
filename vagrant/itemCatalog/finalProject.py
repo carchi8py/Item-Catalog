@@ -31,8 +31,8 @@ def showCatalog():
 @app.route('/catalog/<category>/items')
 def showCategory(category):
     categories = session.query(Catagory)
-    category_id = session.query(Catagory).filter_by(name = category).one()
-    items = session.query(Item).filter(Item.cat_id == category_id.id)
+    category = session.query(Catagory).filter_by(name = category).one()
+    items = session.query(Item).filter(Item.cat_id == category.id)
     return render_template('category.html', categories = categories, catagory = category, items = items)    
 
 @app.route('/catalog/<category>/<item>')
