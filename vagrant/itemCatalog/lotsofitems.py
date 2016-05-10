@@ -40,7 +40,7 @@ add_and_commit(session, catagory2)
 item1 = Item(title = "Basketball", description = "The Ball you play with", catagory=catagory2, date_added = datetime.datetime.now())
 add_and_commit(session, item1)
 
-item2 = Item(title = "Jersey", description = "You wear it on your body", catagory=catagory2, date_added = datetime.datetime.now())
+item2 = Item(title = "Basketball Jersey", description = "You wear it on your body", catagory=catagory2, date_added = datetime.datetime.now())
 add_and_commit(session, item2)
 
 catagory3 = Catagory(name = "Baseball")

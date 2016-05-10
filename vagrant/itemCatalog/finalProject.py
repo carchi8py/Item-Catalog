@@ -43,7 +43,9 @@ def showItems(category, item):
 
 @app.route('/catalog/<item>/edit')
 def editItem(item):
-    return render_template('editItem.html', item = item1, categories = categories)
+    categories = session.query(Catagory)
+    item = session.query(Item).filter_by(title = item).one()
+    return render_template('editItem.html', item = item, categories = categories)
 
 @app.route('/catalog/<item>/delete')
 def deleteItem(item):
