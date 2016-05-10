@@ -1,3 +1,5 @@
+import datetime
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -25,20 +27,20 @@ session = DBSession()
 catagory1 = Catagory(name = "Soccer")
 add_and_commit(session, catagory1)
 
-item1 = Item(title = "Soccer Cleats", description = "You wear them on your feet", catagory=catagory1)
+item1 = Item(title = "Soccer Cleats", description = "You wear them on your feet", catagory=catagory1, date_added = datetime.datetime.now())
 add_and_commit(session, item1)
 
-item2 = Item(title = "Jersey", description = "You wear it on your body", catagory=catagory1)
+item2 = Item(title = "Jersey", description = "You wear it on your body", catagory=catagory1, date_added = datetime.datetime.now())
 add_and_commit(session, item2)
 
 
 catagory2 = Catagory(name = "Basketball")
 add_and_commit(session, catagory2)
 
-item1 = Item(title = "Basketball", description = "The Ball you play with", catagory=catagory2)
+item1 = Item(title = "Basketball", description = "The Ball you play with", catagory=catagory2, date_added = datetime.datetime.now())
 add_and_commit(session, item1)
 
-item2 = Item(title = "Jersey", description = "You wear it on your body", catagory=catagory2)
+item2 = Item(title = "Jersey", description = "You wear it on your body", catagory=catagory2, date_added = datetime.datetime.now())
 add_and_commit(session, item2)
 
 catagory3 = Catagory(name = "Baseball")
@@ -50,11 +52,15 @@ add_and_commit(session, catagory4)
 catagory5 = Catagory(name = "Snowboarding")
 add_and_commit(session, catagory5)
 
-item1 = Item(title = "Goggles", description = "You put them on your face", catagory=catagory5)
+item1 = Item(title = "Goggles", description = "You put them on your face", catagory=catagory5, date_added = datetime.datetime.now())
 add_and_commit(session, item1)
 
-item2 = Item(title = "Snowboard", description = "You step on it and ride down a mountain", catagory=catagory5)
+item2 = Item(title = "Snowboard", description = "You step on it and ride down a mountain", catagory=catagory5, date_added = datetime.datetime.now())
 add_and_commit(session, item2)
+
+yesterday = datetime.datetime.now() - datetime.timedelta(1)
+old_item = Item(title = "Old Snowboard", description = "You step on it and ride down a mountain", catagory=catagory5, date_added = yesterday)
+add_and_commit(session, old_item)
 
 catagory6 = Catagory(name = "Rock Climbing")
 add_and_commit(session, catagory6)

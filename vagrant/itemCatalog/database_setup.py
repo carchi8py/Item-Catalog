@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Text
+from sqlalchemy import Column, ForeignKey, Integer, String, Text, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -26,6 +26,7 @@ class Item(Base):
     id = Column(Integer, primary_key = True)
     title = Column(String(250), nullable = False)
     description = Column(Text, nullable = False)
+    date_added = Column(DateTime, nullable = False)
     cat_id = Column(Integer, ForeignKey('catagory.id'))
     catagory = relationship(Catagory)
 

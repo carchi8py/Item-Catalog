@@ -19,6 +19,15 @@
                     </table>
                 </td>
                 <td>
+                    <table>
+                    <tr>
+                        <td><b>Latest Items</b></td>
+                    </tr>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{item.title}}</td>
+                        </tr>
+                    {% endfor %}
                 </td>
             </tr>
         </table>

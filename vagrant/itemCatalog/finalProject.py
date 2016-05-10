@@ -25,7 +25,10 @@ item1 =  {'name':'Cheese Pizza','description':'made with fresh cheese','price':'
 @app.route('/catalog/')
 def showCatalog():
     categories = session.query(Catagory)
-    return render_template('main.html', categories = categories)
+    latest_items = session.query(Item).order_by(Item.date_added.desc())
+    print latest_items
+    print categories
+    return render_template('main.html', categories = categories, items = latest_items)
 
 @app.route('/catalog/<category>/items')
 def showCategory(category):
