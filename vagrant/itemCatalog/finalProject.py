@@ -15,24 +15,25 @@ session = DBSession()
 
 
 
-catagory = {'name': 'The CRUDdy Crab', 'id': '1'}
+#catagory = {'name': 'The CRUDdy Crab', 'id': '1'}
 #categories = [{'name': 'The CRUDdy Crab', 'id': '1'}, {'name':'Blue Burgers', 'id':'2'},{'name':'Taco Hut', 'id':'3'}]
 
-items = [ {'name':'Cheese Pizza', 'description':'made with fresh cheese', 'price':'$5.99','course' :'Entree', 'id':'1'}, {'name':'Chocolate Cake','description':'made with Dutch Chocolate', 'price':'$3.99', 'course':'Dessert','id':'2'},{'name':'Caesar Salad', 'description':'with fresh organic vegetables','price':'$5.99', 'course':'Entree','id':'3'},{'name':'Iced Tea', 'description':'with lemon','price':'$.99', 'course':'Beverage','id':'4'},{'name':'Spinach Dip', 'description':'creamy dip with fresh spinach','price':'$1.99', 'course':'Appetizer','id':'5'} ]
-item1 =  {'name':'Cheese Pizza','description':'made with fresh cheese','price':'$5.99','course' :'Entree'}
+#items = [ {'name':'Cheese Pizza', 'description':'made with fresh cheese', 'price':'$5.99','course' :'Entree', 'id':'1'}, {'name':'Chocolate Cake','description':'made with Dutch Chocolate', 'price':'$3.99', 'course':'Dessert','id':'2'},{'name':'Caesar Salad', 'description':'with fresh organic vegetables','price':'$5.99', 'course':'Entree','id':'3'},{'name':'Iced Tea', 'description':'with lemon','price':'$.99', 'course':'Beverage','id':'4'},{'name':'Spinach Dip', 'description':'creamy dip with fresh spinach','price':'$1.99', 'course':'Appetizer','id':'5'} ]
+#item1 =  {'name':'Cheese Pizza','description':'made with fresh cheese','price':'$5.99','course' :'Entree'}
 
 @app.route('/')
 @app.route('/catalog/')
 def showCatalog():
     categories = session.query(Catagory)
     latest_items = session.query(Item).order_by(Item.date_added.desc())
-    print latest_items
-    print categories
     return render_template('main.html', categories = categories, items = latest_items)
 
 @app.route('/catalog/<category>/items')
 def showCategory(category):
-    return render_template('category.html', categories = categories, catagory = catagory, items = items)    
+    categories = session.query(Catagory)
+    category_id = session.query(Catagory).filter_by(name = category).one()
+    items = session.query(Item).filter(Item.cat_id == category_id.id)
+    return render_template('category.html', categories = categories, catagory = category, items = items)    
 
 @app.route('/catalog/<category>/<item>')
 def showItems(category, item):
