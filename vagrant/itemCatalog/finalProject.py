@@ -1,4 +1,6 @@
 import datetime
+import random
+import string
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from sqlalchemy import create_engine, asc
@@ -6,6 +8,9 @@ from sqlalchemy.orm import sessionmaker
 from database_setup import Catagory, Item, Base
 
 app = Flask(__name__)
+
+#Steps to create Flash login session
+from flask import session as login_session
 
 # Connect to Database and create database session
 engine = create_engine('sqlite:///catalog.db')
@@ -77,6 +82,18 @@ def newItem():
     else:
         return render_template('newItem.html', categories = categories)
 
+
+### ALL LOGIN Functions ###
+@app.route('/login')
+def showLogin():
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for x in xrange(32))
+    print state
+    login_session['state'] = state
+    print login_session
+    return "The current session state is %s" % login_session['state']
+
 if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host = "0.0.0.0", port = 8000)
