@@ -36,6 +36,7 @@ class Item(Base):
         return {
             'title': self.name,
             'id': self.id,
+            'date_added': self.date_added,
             'description': self.description,
         }
 
