@@ -58,6 +58,8 @@ def showItems(category, item):
 
 @app.route('/catalog/<item>/edit', methods=['GET', 'POST'])
 def editItem(item):
+    if 'username' not in login_session:
+        return redirect('/login')
     categories = session.query(Catagory)
     item = session.query(Item).filter_by(title = item).one()
     if request.method == 'POST':
@@ -73,6 +75,8 @@ def editItem(item):
 
 @app.route('/catalog/<item>/delete', methods=['GET', 'POST'])
 def deleteItem(item):
+    if 'username' not in login_session:
+        return redirect('/login')
     item = session.query(Item).filter_by(title = item).one()
     if request.method == 'POST':
         session.delete(item)
@@ -83,6 +87,8 @@ def deleteItem(item):
 
 @app.route('/catalog/item/new', methods=['GET', 'POST'])
 def newItem():
+    if 'username' not in login_session:
+        return redirect('/login')
     categories = session.query(Catagory)
     if request.method == 'POST':
         category = session.query(Catagory).filter_by(name = request.form['catagories']).one()
