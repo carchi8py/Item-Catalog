@@ -35,7 +35,10 @@ session = DBSession()
 def showCatalog():
     categories = session.query(Catagory)
     latest_items = session.query(Item).order_by(Item.date_added.desc())
-    return render_template('main.html', categories = categories, items = latest_items)
+    if 'username' not in login_session:
+        return render_template('pubMain.html', categories = categories, items = latest_items)
+    else:
+        return render_template('main.html', categories = categories, items = latest_items)
 
 @app.route('/catalog.json')
 def showCatalogJSON():
@@ -61,7 +64,11 @@ def showCategoryJSON(category):
 def showItems(category, item):
     category = session.query(Catagory).filter_by(name = category).one()
     item = session.query(Item).filter(Item.cat_id == category.id).filter_by(title = item).one()
-    return render_template('item.html', item = item)
+    creator = getUserInfo(item.user_id)
+    if 'username' not in login_session or creator.id != login_session['user_id']:
+        return render_template('pubItem.html', item = item)
+    else:
+        return render_template('item.html', item = item)
 
 @app.route('/catalog/<item>/edit', methods=['GET', 'POST'])
 def editItem(item):

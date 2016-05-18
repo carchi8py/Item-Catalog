@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>Catalog App</title>
+    </head>
+    <body>
+        <h1>Catalog App</h1>
+        <table>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td><b>Categories</b></td>
+                        </tr>
+                        {% for c in categories %}
+                            <tr>
+                                <td>
+                                    <a href="/catalog/{{c.name}}/items">{{c.name}}</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+                <td>
+                    <table>
+                    <tr>
+                        <td><b>Latest Items</b></td>
+                    </tr>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{item.title}}</td>
+                        </tr>
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
