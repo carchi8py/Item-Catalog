@@ -32,7 +32,7 @@
                     </tr>
                     {% for item in items %}
                         <tr>
-                            <td>{{item.title}}</td>
+                            <td><a href="/catalog/{{item.catagory.name}}/{{item.title}}">{{item.title}}</a><i> ({{item.catagory.name}})</i></td>
                         </tr>
                     {% endfor %}
                 </td>
