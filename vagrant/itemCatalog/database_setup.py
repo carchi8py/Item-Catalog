@@ -5,6 +5,13 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable = False)
+    email = Column(String(250), nullable = False)
+    picture = Column(String(250))
+
 class Catagory(Base):
     __tablename__ = "catagory"
 
@@ -29,15 +36,18 @@ class Item(Base):
     date_added = Column(DateTime, nullable = False)
     cat_id = Column(Integer, ForeignKey('catagory.id'))
     catagory = relationship(Catagory)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
 
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
         return {
-            'title': self.name,
+            'title': self.title,
             'id': self.id,
             'date_added': self.date_added,
             'description': self.description,
+            'user_id': self.user_id,
         }
 
 engine = create_engine('sqlite:///catalog.db')

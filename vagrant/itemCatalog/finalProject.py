@@ -5,7 +5,7 @@ import string
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
-from database_setup import Catagory, Item, Base
+from database_setup import Catagory, Item, Base, User
 
 app = Flask(__name__)
 
@@ -48,7 +48,14 @@ def showCategory(category):
     categories = session.query(Catagory)
     category = session.query(Catagory).filter_by(name = category).one()
     items = session.query(Item).filter(Item.cat_id == category.id)
-    return render_template('category.html', categories = categories, catagory = category, items = items)    
+    return render_template('category.html', categories = categories, catagory = category, items = items)
+
+@app.route('/catalog/<category>/items.json')
+def showCategoryJSON(category):
+    categories = session.query(Catagory)
+    category = session.query(Catagory).filter_by(name = category).one()
+    items = session.query(Item).filter(Item.cat_id == category.id)
+    return jsonify(Items=[i.serialize for i in items])
 
 @app.route('/catalog/<category>/<item>')
 def showItems(category, item):
@@ -92,7 +99,7 @@ def newItem():
     categories = session.query(Catagory)
     if request.method == 'POST':
         category = session.query(Catagory).filter_by(name = request.form['catagories']).one()
-        newItem = Item(title = request.form['title'], description=request.form['description'], catagory=category, date_added = datetime.datetime.now())
+        newItem = Item(title = request.form['title'], description=request.form['description'], catagory=category, date_added = datetime.datetime.now(), user_id=login_session['user_id'])
         session.add(newItem)
         session.commit()
         return redirect(url_for('showCatalog'))
@@ -184,11 +191,12 @@ def gconnect():
     login_session['provider'] = 'google'
 
     # see if user exists, if it doesn't make a new one
-    #user_id = getUserID(data["email"])
-    #if not user_id:
-    #    user_id = createUser(login_session)
-    #login_session['user_id'] = user_id
-    #print 'woot'
+    user_id = getUserID(data["email"])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+    print login_session
+    print 'woot'
 
     output = ''
     output += '<h1>Welcome, '
@@ -231,6 +239,27 @@ def gdisconnect():
         response = make_response(json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
+
+### HELPER FUNCTIONS
+def createUser(login_session):
+    newUser = User(name=login_session['username'], email=login_session[
+                   'email'], picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
+
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
