@@ -48,10 +48,14 @@ def showCatalogJSON():
 
 @app.route('/catalog/<category>/items')
 def showCategory(category):
+    print 'hi'
     categories = session.query(Catagory)
     category = session.query(Catagory).filter_by(name = category).one()
     items = session.query(Item).filter(Item.cat_id == category.id)
-    return render_template('category.html', categories = categories, catagory = category, items = items)
+    if 'username' not in login_session:
+        return render_template('category.html', categories = categories, catagory = category, items = items, image=None)
+    else:
+        return render_template('category.html', categories = categories, catagory = category, items = items, image=login_session['picture'])
 
 @app.route('/catalog/<category>/items.json')
 def showCategoryJSON(category):
@@ -62,6 +66,7 @@ def showCategoryJSON(category):
 
 @app.route('/catalog/<category>/<item>')
 def showItems(category, item):
+    print 'bye'
     category = session.query(Catagory).filter_by(name = category).one()
     item = session.query(Item).filter(Item.cat_id == category.id).filter_by(title = item).one()
     creator = getUserInfo(item.user_id)

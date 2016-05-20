@@ -1,40 +1,59 @@
 <html>
     <head>
         <title>Catalog App</title>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     </head>
     <body>
-        <h1>Catalog App</h1>
-        <table>
-            <tr>
-                <td>
-                    <table>
-                        <tr>
-                            <td><b>Categories</b></td>
-                        </tr>
-                        {% for c in categories %}
-                            <tr>
-                                <td>
-                                    <a href="/catalog/{{c.name}}/items">{{c.name}}</a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <td><b>{{catagory.name}}</b></td>
-                        </tr>
-                        {% for item in items %}
-                            <tr>
-                                <td>
-                                    <a href="/catalog/{{catagory.name}}/{{item.title}}">{{item.title}}</a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </td>
-            </tr>
-        </table>
+        <div class = "container">
+            <nav class="navbar navbar-dark" style="background-color: #000059;">
+                <a class="navbar-brand" href="/">Catalog App</a>
+                
+                {% if image %}
+                    <form action="/gdisconnect">
+                        <input type="submit" class="navbar-brand btn btn-success pull-right" value="Log Out">
+                        <img src="{{image}}" width="50" class = "pull-right">
+                {% else %}
+                    <form action="/login">
+                        <input type="submit" class="navbar-brand btn btn-success pull-right" value="Log In">
+                {% endif %}
+                </form>
+            </nav>
+            <div class="jumbotron">
+                <table class="table">
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><b>Categories</b></td>
+                                </tr>
+                                {% for c in categories %}
+                                    <tr>
+                                        <td>
+                                            <a href="/catalog/{{c.name}}/items">{{c.name}}</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><b>{{catagory.name}}</b></td>
+                                </tr>
+                                {% for item in items %}
+                                    <tr>
+                                        <td>
+                                            <a href="/catalog/{{catagory.name}}/{{item.title}}">{{item.title}}</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </body>
 </html>
