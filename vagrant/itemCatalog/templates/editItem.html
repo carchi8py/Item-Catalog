@@ -1,32 +1,45 @@
 <html>
     <head>
         <title>Catalog App</title>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     </head>
     <body>
-        <h1>Catalog App</h1>
-        <table>
-            <tr>
-                <td>
-                    Edit Item
-                </td>
-            </tr>
-            <tr>
-                <td>
-                <form action="#", method = "post">
-                    Title<br>
-                    <input type="text" name="title" value="{{item.title}}"><br>
-                    Description <br>
-                    <input type="text" name="description" value="{{item.description}}"><br>
-                    Category <br>
-                    <select name="catagories">
-                        {% for each in categories %}
-                            <option value="{{each.name}}">{{each.name}}</option>
-                        {% endfor %}
-                    </select>
-                    <input type="submit" value="Submit">
+        <div class = "container">
+            <nav class="navbar navbar-dark" style="background-color: #000059;">
+                <a class="navbar-brand" href="/">Catalog App</a>
+                <form action="/gdisconnect">
+                    <input type="submit" class="navbar-brand btn btn-success pull-right" value="Log Out">
+                    <img src="{{image}}" width="50" class = "pull-right">
                 </form>
-                </td>
-            </tr>
-        </table>
+            </nav>
+            <div class="jumbotron">
+                <table class="table">
+                    <tr>
+                        <td>
+                            Edit Item
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <form action="#", method = "post">
+                            Title<br>
+                            <input type="text" name="title" value="{{item.title}}"><br>
+                            Description <br>
+                            <input type="text" name="description" value="{{item.description}}"><br>
+                            Category <br>
+                            <select name="catagories">
+                                {% for each in categories %}
+                                    <option value="{{each.name}}">{{each.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="submit" value="Submit">
+                        </form>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </body>
 </html>

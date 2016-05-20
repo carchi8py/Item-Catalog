@@ -87,7 +87,7 @@ def editItem(item):
         session.commit()
         return redirect(url_for('showCatalog'))
     else:
-        return render_template('editItem.html', item = item, categories = categories)
+        return render_template('editItem.html', item = item, categories = categories, image=login_session['picture'])
 
 @app.route('/catalog/<item>/delete', methods=['GET', 'POST'])
 def deleteItem(item):
@@ -99,7 +99,7 @@ def deleteItem(item):
         session.commit()
         return redirect(url_for('showCatalog'))
     else:
-        return render_template('deleteItem.html', item = item)
+        return render_template('deleteItem.html', item = item, image=login_session['picture'])
 
 @app.route('/catalog/item/new', methods=['GET', 'POST'])
 def newItem():
@@ -113,7 +113,7 @@ def newItem():
         session.commit()
         return redirect(url_for('showCatalog'))
     else:
-        return render_template('newItem.html', categories = categories)
+        return render_template('newItem.html', categories = categories, image=login_session['picture'])
 
 
 ### ALL LOGIN Functions ###
