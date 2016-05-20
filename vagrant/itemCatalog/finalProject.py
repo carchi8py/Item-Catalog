@@ -38,7 +38,7 @@ def showCatalog():
     if 'username' not in login_session:
         return render_template('pubMain.html', categories = categories, items = latest_items)
     else:
-        return render_template('main.html', categories = categories, items = latest_items)
+        return render_template('main.html', categories = categories, items = latest_items, image=login_session['picture'])
 
 @app.route('/catalog.json')
 def showCatalogJSON():
