@@ -65,10 +65,12 @@ def showItems(category, item):
     category = session.query(Catagory).filter_by(name = category).one()
     item = session.query(Item).filter(Item.cat_id == category.id).filter_by(title = item).one()
     creator = getUserInfo(item.user_id)
-    if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('pubItem.html', item = item)
+    if 'username' not in login_session:
+        return render_template('pubItem.html', item = item, image=None)
+    elif creator.id != login_session['user_id']:
+        return render_template('pubItem.html', item = item, image=login_session['picture'])
     else:
-        return render_template('item.html', item = item)
+        return render_template('item.html', item = item, image=login_session['picture'])
 
 @app.route('/catalog/<item>/edit', methods=['GET', 'POST'])
 def editItem(item):
