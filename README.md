@@ -38,3 +38,11 @@ Now the website has started up you can view it at
 `http://localhost:8000/`
 
 It is important you use *localhost* instead of *0.0.0.0* inside the URL address. That will prevent OAuth from failing.
+
+## APi endpoints
+
+| Request | What you get |
+| ------------- |:-------------:|
+| /catalog.json | Get a list of all sport Catagories in the database |
+| /catalog/*SPORT*/items.json | Get a list of equiment used for this specific Sport |
+
