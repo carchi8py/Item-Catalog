@@ -6,6 +6,9 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 
 class User(Base):
+    """
+    The User Class i used to store information about our users
+    """
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable = False)
@@ -13,6 +16,9 @@ class User(Base):
     picture = Column(String(250))
 
 class Catagory(Base):
+    """
+    The Catagory Class is used to store information about our high level catagories
+    """
     __tablename__ = "catagory"
 
     id = Column(Integer, primary_key = True)
@@ -28,6 +34,9 @@ class Catagory(Base):
 
 
 class Item(Base):
+    """
+    The Item class is used to store specific sport items
+    """
     __tablename__ = "item"
 
     id = Column(Integer, primary_key = True)

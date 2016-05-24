@@ -24,7 +24,7 @@ DBSession = sessionmaker(bind=engine)
 # session.rollback()
 session = DBSession()
 
-#Create teh Admin user
+#Create the Admin user
 user1 = User(name="Super Admin", email="none@null.com", picture="http://www.practical-programming.org/articles/love_null/images/null-pointer-exception.png")
 session.add(user1)
 session.commit()
@@ -47,11 +47,23 @@ add_and_commit(session, item1)
 item2 = Item(user_id=1, title = "Basketball Jersey", description = "You wear it on your body", catagory=catagory2, date_added = datetime.datetime.now())
 add_and_commit(session, item2)
 
+
 catagory3 = Catagory(name = "Baseball")
 add_and_commit(session, catagory3)
 
+item1 = Item(user_id=1, title = "Baseball Bat", description = "A bat that you hit the Baseball with", catagory=catagory3, date_added = datetime.datetime.now())
+add_and_commit(session, item1)
+
+item2 = Item(user_id=1, title = "Baseball Glove", description = "A ball that you catch the glove with", catagory=catagory3, date_added = datetime.datetime.now())
+add_and_commit(session, item2)
+
+
 catagory4 = Catagory(name = "Frisbee")
 add_and_commit(session, catagory4)
+
+item1 = Item(user_id=1, title = "Ultimate Frisbee", description = "a brand of plastic concave disk, used for various catching games by sailing it between two or more players and thrown by making it spin as it is released with a flick of the wrist.", catagory=catagory4, date_added = datetime.datetime.now())
+add_and_commit(session, item1)
+
 
 catagory5 = Catagory(name = "Snowboarding")
 add_and_commit(session, catagory5)
@@ -62,18 +74,21 @@ add_and_commit(session, item1)
 item2 = Item(user_id=1, title = "Snowboard", description = "You step on it and ride down a mountain", catagory=catagory5, date_added = datetime.datetime.now())
 add_and_commit(session, item2)
 
+#Create an old object that will appear at the end of the list
 yesterday = datetime.datetime.now() - datetime.timedelta(1)
 old_item = Item(user_id=1, title = "Old Snowboard", description = "You step on it and ride down a mountain", catagory=catagory5, date_added = yesterday)
 add_and_commit(session, old_item)
 
+
 catagory6 = Catagory(name = "Rock Climbing")
 add_and_commit(session, catagory6)
+
+item1 = Item(user_id=1, title = "Ice Pick", description = "An Ice pick is used to get leaverage on the mountain so you don't fall off", catagory=catagory6, date_added = datetime.datetime.now())
+add_and_commit(session, item1)
+
 
 catagory7 = Catagory(name = "Foosball")
 add_and_commit(session, catagory7)
 
-catagory8 = Catagory(name = "Skating")
-add_and_commit(session, catagory8)
-
-catagory9 = Catagory(name = "Hockey")
-add_and_commit(session, catagory9)
+item1 = Item(user_id=1, title = "foosballs", description = "The little ball the little men will kick", catagory=catagory7, date_added = datetime.datetime.now())
+add_and_commit(session, item1)

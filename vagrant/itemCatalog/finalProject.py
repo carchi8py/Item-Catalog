@@ -33,8 +33,12 @@ session = DBSession()
 @app.route('/')
 @app.route('/catalog/')
 def showCatalog():
+    """
+    The Main page of our website
+    """
     categories = session.query(Catagory)
     latest_items = session.query(Item).order_by(Item.date_added.desc())
+    #If the user is logged in we want to show their picture in the status bar of the website
     if 'username' not in login_session:
         return render_template('pubMain.html', categories = categories, items = latest_items)
     else:
@@ -42,16 +46,21 @@ def showCatalog():
 
 @app.route('/catalog.json')
 def showCatalogJSON():
-    #TODO figure out how to show items later
+    """
+    The json version of our main page
+    """
     categories = session.query(Catagory)
     return jsonify(Catagorys=[i.serialize for i in categories])
 
 @app.route('/catalog/<category>/items')
 def showCategory(category):
-    print 'hi'
+    """
+    Show a specific sport catagory
+    """
     categories = session.query(Catagory)
     category = session.query(Catagory).filter_by(name = category).one()
     items = session.query(Item).filter(Item.cat_id == category.id)
+    #If the user is logged in we want to show their picture in the status bar of the website
     if 'username' not in login_session:
         return render_template('category.html', categories = categories, catagory = category, items = items, image=None)
     else:
@@ -59,6 +68,9 @@ def showCategory(category):
 
 @app.route('/catalog/<category>/items.json')
 def showCategoryJSON(category):
+    """
+    The json version of our Items
+    """
     categories = session.query(Catagory)
     category = session.query(Catagory).filter_by(name = category).one()
     items = session.query(Item).filter(Item.cat_id == category.id)
@@ -66,19 +78,28 @@ def showCategoryJSON(category):
 
 @app.route('/catalog/<category>/<item>')
 def showItems(category, item):
-    print 'bye'
+    """
+    Shows a specific item in the database
+    """
     category = session.query(Catagory).filter_by(name = category).one()
     item = session.query(Item).filter(Item.cat_id == category.id).filter_by(title = item).one()
     creator = getUserInfo(item.user_id)
+    #if the user is not logged in return the public page
     if 'username' not in login_session:
         return render_template('pubItem.html', item = item, image=None)
+    #if the user is logged in dosn't own the item, show the public page, but show their picture
     elif creator.id != login_session['user_id']:
         return render_template('pubItem.html', item = item, image=login_session['picture'])
+    #if the user is logged in and owns the item, show them the page they can modify it
     else:
         return render_template('item.html', item = item, image=login_session['picture'])
 
 @app.route('/catalog/<item>/edit', methods=['GET', 'POST'])
 def editItem(item):
+    """
+    Allows a user to edit an item from the database
+    """
+    #if the user isn't logged, they shouldn't see this page
     if 'username' not in login_session:
         return redirect('/login')
     categories = session.query(Catagory)
@@ -96,6 +117,9 @@ def editItem(item):
 
 @app.route('/catalog/<item>/delete', methods=['GET', 'POST'])
 def deleteItem(item):
+    """
+    Allow a user to delete an item
+    """
     if 'username' not in login_session:
         return redirect('/login')
     item = session.query(Item).filter_by(title = item).one()
@@ -108,6 +132,9 @@ def deleteItem(item):
 
 @app.route('/catalog/item/new', methods=['GET', 'POST'])
 def newItem():
+    """
+    Allow the user to create a new item
+    """
     if 'username' not in login_session:
         return redirect('/login')
     categories = session.query(Catagory)
@@ -122,8 +149,13 @@ def newItem():
 
 
 ### ALL LOGIN Functions ###
+
+
 @app.route('/login')
 def showLogin():
+    """
+    Show the login page for the user
+    """
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
@@ -131,7 +163,9 @@ def showLogin():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
-    print 'hi'
+    """
+    Checks with google if the user is authenticated or not
+    """
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -179,7 +213,6 @@ def gconnect():
         return response
 
     stored_credentials = login_session.get('credentials')
-    print login_session
     stored_gplus_id = login_session.get('gplus_id')
     if stored_credentials is not None and gplus_id == stored_gplus_id:
         response = make_response(json.dumps('Current user is already connected.'),
@@ -209,8 +242,6 @@ def gconnect():
     if not user_id:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
-    print login_session
-    print 'woot'
 
     output = ''
     output += '<h1>Welcome, '
@@ -220,25 +251,21 @@ def gconnect():
     output += login_session['picture']
     output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
     flash("you are now logged in as %s" % login_session['username'])
-    print "done!"
     return output
 
 @app.route('/gdisconnect')
 def gdisconnect():
+    """
+    Sign Google user out of the site
+    """
     access_token = login_session['access_token']
-    print 'In gdisconnect access token is %s', access_token
-    print 'User name is: ' 
-    print login_session['username']
     if access_token is None:
-        print 'Access Token is None'
         response = make_response(json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
-    print 'result is '
-    print result
     if result['status'] == '200':
         del login_session['access_token'] 
         del login_session['gplus_id']
@@ -254,8 +281,13 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-### HELPER FUNCTIONS
+### HELPER FUNCTIONS ###
+
+
 def createUser(login_session):
+    """
+    Create a new user in the database
+    """
     newUser = User(name=login_session['username'], email=login_session[
                    'email'], picture=login_session['picture'])
     session.add(newUser)
@@ -264,18 +296,26 @@ def createUser(login_session):
     return user.id
 
 def getUserInfo(user_id):
+    """
+    Get the user object from a user id
+    """
     user = session.query(User).filter_by(id=user_id).one()
     return user
 
 
 def getUserID(email):
+    """
+    Get the user object from a user email
+    """
     try:
         user = session.query(User).filter_by(email=email).one()
         return user.id
     except:
         return None
 
+
 if __name__ == '__main__':
+    #lol
     app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host = "0.0.0.0", port = 8000)
